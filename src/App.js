@@ -1,25 +1,35 @@
 import React from 'react';
+
+import { Layout } from 'antd';
+import styled from 'styled-components';
+
 import logo from './logo.svg';
 import './App.css';
 
+
+// TODO: This grid breaks html width on mobile view.
+const SGrid = styled.div`
+  width: 960px;
+  max-width: 960px;
+  margin: 0 auto;
+`
+
+
 function App() {
+  const { Header, Footer, Content } = Layout;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout className='App'>
+      <Header>
+        <SGrid>Header</SGrid>
+      </Header>
+      <Content>
+        <SGrid>Container</SGrid>
+      </Content>
+      <Footer className="remove-padding">
+        <SGrid>Footer</SGrid>
+      </Footer>
+    </Layout>
   );
 }
 
