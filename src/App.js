@@ -1,34 +1,66 @@
-import React from 'react';
-
-import { Layout } from 'antd';
+import React, { useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import { Menu, Layout } from 'antd';
 import styled from 'styled-components';
 
+import { Post, Search } from './screens';
 import logo from './logo.svg';
 import './App.css';
 
 
 // TODO: This grid breaks html width on mobile view.
 const SGrid = styled.div`
+  height: 100%;
   width: 960px;
   max-width: 960px;
   margin: 0 auto;
+
+
 `
+
+const { Header, Footer, Content } = Layout;
 
 
 function App() {
-  const { Header, Footer, Content } = Layout;
+  const [activeRoute, setActiveRoute] = useState('/')
 
   return (
     <Layout className='App'>
-      <Header>
-        <SGrid>Header</SGrid>
-      </Header>
-      <Content>
-        <SGrid>Container</SGrid>
-      </Content>
-      <Footer className="remove-padding">
-        <SGrid>Footer</SGrid>
-      </Footer>
+      <Router>
+        <Header>
+          <SGrid>
+            <div>
+            <Link to="/">
+              <img src={logo} width={40} />
+            </Link>
+            </div>
+            <Menu style={{ display: 'inline-flex'}} onClick={e => setActiveRoute(e.key)} selectedKeys={[activeRoute]} mode="horizontal">
+              <Menu.Item key="post">
+                <Link to="/post">Post</Link>
+              </Menu.Item>
+              <Menu.Item key="search">
+                <Link to="/search">Discover</Link>
+              </Menu.Item>
+            </Menu>
+          </SGrid>
+        </Header>
+        <Content>
+          <SGrid style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+            <Switch>
+              <Route path="/post" component={Post}/>
+              <Route path="/search" component={Search} />
+            </Switch>
+          </SGrid>
+        </Content>
+        <Footer className="remove-padding txt-right">
+          <SGrid>Made with _ in _ by _ & _</SGrid>
+        </Footer>
+      </Router>
     </Layout>
   );
 }

@@ -10,3 +10,7 @@ html, body, #root, .App {
     padding-right: 0px;
   }
 }
+
+.txt-right {
+  text-align: right;
+}
