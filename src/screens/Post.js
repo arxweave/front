@@ -118,6 +118,15 @@ const Step2 = ({ dispatch, summary }) => {
   )
 }
 
+const Step3 = ({ dispatch }) => {
+  const reset = () => dispatch({ type: PostReducer.actionTypes.RESET })
+  return (
+    <>
+      <Button onClick={reset}>Give me more!</Button>
+    </>
+  )
+}
+
 export default function Post() {
   const [state, dispatch] = useReducer(PostReducer, initialState)
   const { currentStep, isLoading, summary } = state
@@ -140,7 +149,7 @@ export default function Post() {
       />
       <Step
         title={<Title level={4}>Share the love</Title>}
-        description="This is a description."
+        description={currentStep === 2 && <Step3 dispatch={dispatch} />}
       />
     </Steps>
   )

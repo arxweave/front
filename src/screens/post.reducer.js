@@ -36,6 +36,8 @@ export const PostReducer = (state, { type, payload }) => {
         ...state,
         currentStep: current > 0 ? current  - 1 : 0
       }
+    case PostReducer.actionTypes.RESET:
+      return initialState
     default:
       return state
   }
@@ -44,8 +46,8 @@ export const PostReducer = (state, { type, payload }) => {
 PostReducer.actionTypes = {
   SEARCH_REQUEST: 'SEARCH_REQUEST',
   SEARCH_SUCCESS: 'SEARCH_SUCCESS',
-  GO_BACK: 'GO_BACK',
   PERMINAFY_SUCCESS: 'PERMINAFY_SUCCESS',
-  PERMINAFY_REQUEST: 'PERMINAFY_REQUEST'
-
+  PERMINAFY_REQUEST: 'PERMINAFY_REQUEST',
+  GO_BACK: 'GO_BACK',
+  RESET: 'RESET'
 }
