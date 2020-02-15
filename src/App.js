@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
+  Redirect,
   Switch,
   Route,
   Link
@@ -52,8 +53,9 @@ function App() {
         <Content style={{ margin: '10em 0'}}>
           <SGrid style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             <Switch>
-              <Route path="/post" component={Post}/>
+              <Route path="/post" component={Post} />
               <Route path="/search" component={Search} />
+              <Redirect from="/" exact to="/post" />
             </Switch>
           </SGrid>
         </Content>
