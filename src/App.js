@@ -49,7 +49,7 @@ function App() {
             </Menu>
           </SGrid>
         </Header>
-        <Content>
+        <Content style={{ margin: '10em 0'}}>
           <SGrid style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             <Switch>
               <Route path="/post" component={Post}/>

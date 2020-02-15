@@ -1,6 +1,6 @@
 @import '~antd/dist/antd.css';
 
-html, body, #root, .App {
+html, body, #root, {
   height: 100%;
 }
 
