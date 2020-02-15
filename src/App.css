@@ -1,7 +1,11 @@
 @import '~antd/dist/antd.css';
 
-html, body, #root, {
+html, body, #root {
   height: 100%;
+}
+
+.App {
+  min-height: 100%;
 }
 
 @media screen and (max-width: 600px) {

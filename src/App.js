@@ -20,8 +20,6 @@ const SGrid = styled.div`
   width: 960px;
   max-width: 960px;
   margin: 0 auto;
-
-
 `
 
 const { Header, Footer, Content } = Layout;
