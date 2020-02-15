@@ -1,11 +1,11 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
 import ReactJson from 'react-json-view'
-import { Button, Form, Typography, Steps, Input } from 'antd';
+import { Icon, Button, Form, Typography, Steps, Input } from 'antd';
 
 import { ARXIV_BASE_URL } from '../constants';
 import { parseXML } from '../utils';
-import { PostReducer } from './post.reducer';
+import { PostReducer, initialState } from './post.reducer';
 
 const { Title, Paragraph } = Typography;
 const { Step } = Steps;
@@ -32,6 +32,7 @@ const Step1 = Form.create({ name: 'get_doi' })(({
     // Stop default page reload
     e.preventDefault();
     // Trigger api request
+    dispatch({ type: PostReducer.actionTypes.SEARCH_REQUEST })
     axios
       .get(getDOIQueryUrl(getFieldValue('doi')))
       .then(res => {
@@ -51,7 +52,7 @@ const Step1 = Form.create({ name: 'get_doi' })(({
       })
       .then(summary => {
         console.log('summary', summary)
-        dispatch({ type: PostReducer.actionTypes.FETCH_SUCCESS, payload: summary })
+        dispatch({ type: PostReducer.actionTypes.SEARCH_SUCCESS, payload: summary })
       })
       .catch(foo => console.log('Erorr', foo))
   }
@@ -84,6 +85,11 @@ const Step1 = Form.create({ name: 'get_doi' })(({
 const Step2 = ({ dispatch, summary }) => {
   const perminify = () => {
     console.log('Perminify')
+    dispatch({ type: PostReducer.actionTypes.PERMINAFY_SUCCESS })
+  }
+
+  const cancel = () => {
+    dispatch({ type: PostReducer.actionTypes.GO_BACK })
   }
 
   return (
@@ -102,6 +108,9 @@ const Step2 = ({ dispatch, summary }) => {
           enableEdit={false}
         />
       }
+      <Button type="primary" onClick={cancel}>
+        Cancel
+      </Button>
       <Button type="primary" onClick={perminify}>
         Perminify
       </Button>
@@ -110,12 +119,29 @@ const Step2 = ({ dispatch, summary }) => {
 }
 
 export default function Post() {
-  const [state, dispatch] = useReducer(PostReducer, {})
+  const [state, dispatch] = useReducer(PostReducer, initialState)
+  const { currentStep, isLoading, summary } = state
+
+  const waitStatus = (step) => {
+    return currentStep === step && isLoading
+  }
+
   return (
-    <Steps direction={'vertical'} current={1}>
-      <Step title={<Title level={4}>Find a Paper</Title>} description={<Step1 dispatch={dispatch} />} />
-      <Step title={<Title level={4}>Perminify</Title>} description={<Step2 dispatch={dispatch} summary={state.summary} />} />
-      <Step title={<Title level={4}>Share the love</Title>} description="This is a description." />
+    <Steps direction="vertical" current={currentStep}>
+      <Step
+        title={<Title level={4}>Find a Paper</Title>}
+        description={currentStep === 0 && <Step1 dispatch={dispatch} />}
+        icon={waitStatus(0) && <Icon type="loading"/>}
+      />
+      <Step
+        title={<Title level={4}>Perminify</Title>}
+        description={currentStep === 1 && <Step2 dispatch={dispatch} summary={summary} />}
+        icon={waitStatus(1) && <Icon type="loading" />}
+      />
+      <Step
+        title={<Title level={4}>Share the love</Title>}
+        description="This is a description."
+      />
     </Steps>
   )
 }
