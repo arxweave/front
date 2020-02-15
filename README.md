@@ -1,3 +1,7 @@
+## Sw4rtz.it
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e0adef06-364d-4829-a808-01037f8f1c48/deploy-status)](https://app.netlify.com/sites/sw4rtz/deploys)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
