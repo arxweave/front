@@ -1,7 +1,11 @@
-import React from 'react';
-import { parseString } from 'xml2js';
+import React, { useReducer } from 'react';
+import axios from 'axios';
+import ReactJson from 'react-json-view'
 import { Button, Form, Typography, Steps, Input } from 'antd';
+
 import { ARXIV_BASE_URL } from '../constants';
+import { parseXML } from '../utils';
+import { PostReducer } from './post.reducer';
 
 const { Title, Paragraph } = Typography;
 const { Step } = Steps;
@@ -18,27 +22,39 @@ const validateDOI = (rule, value, callback) => {
 
 const getDOIQueryUrl = (doi) => `${ARXIV_BASE_URL}/query?id_list=${2002.00012}`
 
+
 const Step1 = Form.create({ name: 'get_doi' })(({
-  form: { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue }
+  form: { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue },
+  dispatch
 }) => {
 
   const handleSubmit = (e) => {
     // Stop default page reload
     e.preventDefault();
     // Trigger api request
-    console.log('hello', getFieldValue('doi'))
-    fetch(getDOIQueryUrl(getFieldValue('doi')))
-      .then(response => response.text())
+    axios
+      .get(getDOIQueryUrl(getFieldValue('doi')))
       .then(res => {
-        const json = parseString(res, (err, res) => {
-
-          console.log('Res', err, res)
-        })
-        // console.log(json)
+        if (res.status !== 200) { throw new Error('useful?')}
+        return parseXML(res.data)
+      })
+      .then(data => {
+        const [entry] = data.feed.entry
+        return {
+          id: entry.id[0],
+          title: entry.title[0],
+          summary: entry.summary[0],
+          authors: entry.author,
+          links: entry.link,
+          categories: entry.category
+        }
+      })
+      .then(summary => {
+        console.log('summary', summary)
+        dispatch({ type: PostReducer.actionTypes.FETCH_SUCCESS, payload: summary })
       })
       .catch(foo => console.log('Erorr', foo))
   }
-
 
   const DOIError = isFieldTouched('doi') && getFieldError('doi');
 
@@ -65,11 +81,7 @@ const Step1 = Form.create({ name: 'get_doi' })(({
   )
 })
 
-const Step2 = () => {
-  const dummy = {
-    author: 'Alan Kay',
-    description: 'Composition over class inheritance'
-  }
+const Step2 = ({ dispatch, summary }) => {
   const perminify = () => {
     console.log('Perminify')
   }
@@ -77,7 +89,19 @@ const Step2 = () => {
   return (
     <>
       <Paragraph>Send into the Permawed</Paragraph>
-      <Paragraph code>{JSON.stringify(dummy, null, 2)}</Paragraph>
+      {summary &&
+        <ReactJson
+          theme={'solorized'}
+          name={false}
+          src={summary}
+          displayDataTypes={false}
+          displayObjectSize={false}
+          indentWidth={2}
+          collapsed={1}
+          enableClipboard={false}
+          enableEdit={false}
+        />
+      }
       <Button type="primary" onClick={perminify}>
         Perminify
       </Button>
@@ -86,10 +110,11 @@ const Step2 = () => {
 }
 
 export default function Post() {
+  const [state, dispatch] = useReducer(PostReducer, {})
   return (
     <Steps direction={'vertical'} current={1}>
-      <Step title={<Title level={4}>Find a Paper</Title>} description={<Step1 />} />
-      <Step title={<Title level={4}>Perminify</Title>} description={<Step2 />} />
+      <Step title={<Title level={4}>Find a Paper</Title>} description={<Step1 dispatch={dispatch} />} />
+      <Step title={<Title level={4}>Perminify</Title>} description={<Step2 dispatch={dispatch} summary={state.summary} />} />
       <Step title={<Title level={4}>Share the love</Title>} description="This is a description." />
     </Steps>
   )
