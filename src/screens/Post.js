@@ -24,11 +24,11 @@ const getDOIQueryUrl = (doi) => `${ARXIV_BASE_URL}/query?id_list=${2002.00012}`
 
 
 const Step1 = Form.create({ name: 'get_doi' })(({
-  form: { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue },
+  form: { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue, ...form },
   dispatch
 }) => {
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (value, e) => {
     // Stop default page reload
     e.preventDefault();
     // Trigger api request
@@ -51,7 +51,6 @@ const Step1 = Form.create({ name: 'get_doi' })(({
         }
       })
       .then(summary => {
-        console.log('summary', summary)
         dispatch({ type: PostReducer.actionTypes.SEARCH_SUCCESS, payload: summary })
       })
       .catch(foo => console.log('Erorr', foo))
@@ -61,21 +60,24 @@ const Step1 = Form.create({ name: 'get_doi' })(({
 
   return (
     <>
-      <Form onSubmit={handleSubmit}>
-        <Form.Item label="DOI" validateStatus={DOIError ? 'error' : ''}>
+      <Form layout="inline">
+        <Form.Item
+          wrapperCol={{ sm: 24 }}
+          style={{ width: "100%", marginRight: '1em'}}
+          validateStatus={DOIError ? 'error' : ''}>
           {getFieldDecorator('doi', {
             rules: [
               { required: true, message: 'Please enter a DOI' },
               { validator: validateDOI }
             ],
           })(
-            <Input size="large" placeholder="DOI number" />
+            <Input.Search
+              enterButton
+              size="large"
+              placeholder="DOI number"
+              onSearch={handleSubmit}
+              />
           )}
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-            Fetch
-          </Button>
         </Form.Item>
       </Form>
     </>
