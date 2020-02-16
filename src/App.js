@@ -34,6 +34,11 @@ const SGrid = styled.div`
       padding: 0 70px 0 60px;
     }
   `}
+
+  ${props => props.footer && css `
+    justify-content: flex-end;
+    padding-right: 20px;
+  `}
 `
 
 const { Header, Footer, Content } = Layout;
@@ -90,8 +95,12 @@ function App() {
             </Switch>
           </SGrid>
         </Content>
-        <Footer className="remove-padding txt-right">
-          <SGrid>Made with <Icon type="fist" /> in <Icon type="eiffel" style={{ marginLeft: '-2px', verticalAlign: '-1px' }}/></SGrid>
+        <Footer>
+          <SGrid footer>
+            <span>
+              Made with <Icon type="fist" /> in <Icon type="eiffel" style={{ marginLeft: '-2px', verticalAlign: '-1px' }} />
+            </span>
+          </SGrid>
         </Footer>
       </Layout>
     </Router>
