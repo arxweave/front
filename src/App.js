@@ -63,10 +63,11 @@ function App() {
             justifyContent: 'space-between'
             }}>
             <div style={{ display: 'inline-flex', alignItems: 'center'}}>
-              <Link to="/" style={{ display: 'flex', }}>
+              <Link to="/">
                 <T.Title
+                  id="logo"
                   level={2}
-                  style={{ display: 'inline-block', marginBottom: '0'}}>
+                  style={{ display: 'inline-block', marginBottom: '0', lineHeight: '30px', verticalAlign: 'center'}}>
                   Sw4rtz.it
                 </T.Title>
               </Link>

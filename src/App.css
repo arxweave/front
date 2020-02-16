@@ -1,7 +1,26 @@
 @import '~antd/dist/antd.css';
 
+@font-face {
+  font-family: 'Lakton';
+  src: local('Lakton'), url(./assets/fonts/Lekton-Regular.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lakton';
+  src: local('Lakton'), url(./assets/fonts/Lekton-Bold.ttf) format('truetype');
+  font-weight: bold;
+  font-style: bold;
+}
+
+#logo {
+  font-family: 'Baloo Bhaina', cursive;
+}
+
 html, body, #root {
   height: 100%;
+  font-family: 'Lakton';
 }
 
 .App {
