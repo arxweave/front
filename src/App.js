@@ -9,10 +9,10 @@ import {
 import { Menu, Layout } from 'antd';
 import styled from 'styled-components';
 
+import { Icon } from './components'
 import { Post, Search } from './screens';
 import logo from './logo.svg';
 import './App.css';
-
 
 // TODO: This grid breaks html width on mobile view.
 const SGrid = styled.div`
@@ -58,7 +58,7 @@ function App() {
           </SGrid>
         </Content>
         <Footer className="remove-padding txt-right">
-          <SGrid>Made with _ in _ by _ & _</SGrid>
+          <SGrid>Made with <Icon type="fist" /> in <Icon type="eiffel" style={{ marginLeft: '-2px', verticalAlign: '-1px' }}/></SGrid>
         </Footer>
       </Router>
     </Layout>
