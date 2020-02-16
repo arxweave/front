@@ -6,7 +6,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { Menu, Layout } from 'antd';
+import { Typography as T, Menu, Layout } from 'antd';
 import styled, { css } from 'styled-components';
 
 import { Icon } from './components'
@@ -24,14 +24,16 @@ const SGrid = styled.div`
 
   // Keep main grid aligned with header.
   ${props => props.main && css`
-    padding: 0 20px 0 10px;
+    margin-top: 18em;
+    padding: 0 20px 0 0;
     // antd lg
     @media screen and (max-width: 992px) {
-      padding: 0 30px 0 20px;
+      padding: 0 30px 0 15px;
     }
     // antd sm
     @media screen and (max-width: 576px) {
-      padding: 0 70px 0 60px;
+      margin-top: 10em;
+      padding: 0 70px 0 50px;
     }
   `}
 
@@ -53,25 +55,30 @@ function App() {
         <Header style={{
           position: 'fixed',
           width: '100%',
-          zIndex: '999'
+          zIndex: '999',
+          backgroundColor: '#f0f2f5'
           }}>
           <SGrid style={{
             display: 'flex',
             justifyContent: 'space-between'
             }}>
-            <div style={{ display: 'inline-block', color: 'white'}}>
-              <Link to="/">
-                <img src={logo} width={40} />
+            <div style={{ display: 'inline-flex', alignItems: 'center'}}>
+              <Link to="/" style={{ display: 'flex', }}>
+                <T.Title
+                  level={2}
+                  style={{ display: 'inline-block', marginBottom: '0'}}>
+                  Sw4rtz.it
+                </T.Title>
               </Link>
             </div>
             <Menu
-              theme="dark"
               mode="horizontal"
               onClick={e => setActiveRoute(e.key)}
               selectedKeys={[activeRoute]}
               style={{
                 display: 'inline-block',
                 lineHeight: '64px',
+                backgroundColor: '#f0f2f5'
               }}>
               <Menu.Item key="post">
                 <Link to="/post">Post</Link>
@@ -82,7 +89,7 @@ function App() {
             </Menu>
           </SGrid>
         </Header>
-        <Content style={{ margin: '10em 0'}}>
+        <Content>
           <SGrid main style={{
             display: 'flex',
             flexDirection: 'column',
