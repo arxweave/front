@@ -1,10 +1,10 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
 import ReactJson from 'react-json-view'
-import { Icon, Button, Form, Typography, Steps, Input } from 'antd';
+import { Row, Col, Icon, Button, Form, Typography, Steps, Input } from 'antd';
 
-import { ARXIV_BASE_URL } from '../constants';
-import { parseXML } from '../utils';
+import { ARXIV_BASE_URL, SW4RTZ_API } from '../constants';
+import { parseXML, arXivIDFromURL } from '../utils';
 import { PostReducer, initialState } from './post.reducer';
 
 const { Title, Paragraph } = Typography;
@@ -84,10 +84,25 @@ const Step1 = Form.create({ name: 'get_doi' })(({
   )
 })
 
-const Step2 = ({ dispatch, summary }) => {
+const Step2 = ({ dispatch, data }) => {
   const perminify = () => {
-    console.log('Perminify')
-    dispatch({ type: PostReducer.actionTypes.PERMINAFY_SUCCESS })
+    dispatch({ type: PostReducer.actionTypes.PERMINAFY_REQUEST })
+    fetch(
+      `${SW4RTZ_API}/new`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ arXivID: arXivIDFromURL(data.id) })
+      })
+      .then((res) => {
+
+        console.log(res.json())
+        dispatch({ type: PostReducer.actionTypes.PERMINAFY_SUCCESS })
+      })
+      .catch(console.log)
   }
 
   const cancel = () => {
@@ -96,12 +111,12 @@ const Step2 = ({ dispatch, summary }) => {
 
   return (
     <>
-      <Paragraph>Send into the Permawed</Paragraph>
-      {summary &&
+      <Paragraph>Send into the Permaweb</Paragraph>
+      {data &&
         <ReactJson
           theme={'solorized'}
           name={false}
-          src={summary}
+          src={data}
           displayDataTypes={false}
           displayObjectSize={false}
           indentWidth={2}
@@ -110,12 +125,22 @@ const Step2 = ({ dispatch, summary }) => {
           enableEdit={false}
         />
       }
-      <Button type="primary" onClick={cancel}>
-        Cancel
-      </Button>
-      <Button type="primary" onClick={perminify}>
-        Perminify
-      </Button>
+      <Row type="flex" justify="start">
+        <Col span={3}>
+
+          <Button type="default" onClick={cancel}>
+            Cancel
+          </Button>
+        </Col>
+        <Col span={3}>
+
+          <Button type="primary" onClick={perminify}>
+            Perminify
+          </Button>
+        </Col>
+
+
+      </Row>
     </>
   )
 }
@@ -131,7 +156,7 @@ const Step3 = ({ dispatch }) => {
 
 export default function Post() {
   const [state, dispatch] = useReducer(PostReducer, initialState)
-  const { currentStep, isLoading, summary } = state
+  const { currentStep, isLoading, data } = state
 
   const waitStatus = (step) => {
     return currentStep === step && isLoading
@@ -140,17 +165,17 @@ export default function Post() {
   return (
     <Steps direction="vertical" current={currentStep}>
       <Step
-        title={<Title level={4}>Find a Paper</Title>}
+        title={<Title level={4} className="marginless">Find a Paper</Title>}
         description={currentStep === 0 && <Step1 dispatch={dispatch} />}
         icon={waitStatus(0) && <Icon type="loading"/>}
       />
       <Step
-        title={<Title level={4}>Perminify</Title>}
-        description={currentStep === 1 && <Step2 dispatch={dispatch} summary={summary} />}
+        title={<Title level={4} className="marginless">Perminify</Title>}
+        description={currentStep === 1 && <Step2 dispatch={dispatch} data={data} />}
         icon={waitStatus(1) && <Icon type="loading" />}
       />
       <Step
-        title={<Title level={4}>Share the love</Title>}
+        title={<Title level={4} className="marginless">Share the love</Title>}
         description={currentStep === 2 && <Step3 dispatch={dispatch} />}
       />
     </Steps>

@@ -67,7 +67,12 @@ function App() {
                 <T.Title
                   id="logo"
                   level={2}
-                  style={{ display: 'inline-block', marginBottom: '0', lineHeight: '30px', verticalAlign: 'center'}}>
+                  style={{
+                    display: 'inline-block',
+                    marginBottom: '0',
+                    lineHeight: '30px',
+                    verticalAlign: 'center'
+                    }}>
                   Sw4rtz.it
                 </T.Title>
               </Link>
