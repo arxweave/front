@@ -2,16 +2,15 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import ReactJson from 'react-json-view'
 import * as R from 'ramda'
-import { Row, Col, Icon, Button, Form, Typography, Steps, Input } from 'antd';
+import { Row, Col, Icon, Button, Form, Typography as T, Steps, Input } from 'antd';
 
 import { Link } from '../components';
 import { ARXIV_BASE_URL, SW4RTZIT_API } from '../constants';
 import { parseXML, arXivIDFromURL } from '../utils';
 import { PostReducer, initialState } from './post.reducer';
+import { Sw4rtzAPI } from '../services';
 
-const { Title, Paragraph } = Typography;
 const { Step } = Steps;
-
 
 const hasErrors = (fieldsErrors) => {
   return Object.keys(fieldsErrors).some(f => fieldsErrors[f])
@@ -44,12 +43,13 @@ const FindByDOI = Form.create({ name: 'get_doi' })(({
       .then(data => {
         const [entry] = data.feed.entry
         return {
-          id: entry.id[0],
+          id: arXivIDFromURL(entry.id[0]),
+          url: entry.id[0],
           title: entry.title[0],
           summary: entry.summary[0],
           authors: entry.author,
           links: entry.link,
-          categories: entry.category
+          categories: entry.category,
         }
       })
       .then(summary => {
@@ -86,7 +86,7 @@ const FindByDOI = Form.create({ name: 'get_doi' })(({
   )
 })
 
-const Perminify = ({ dispatch, article }) => {
+const Perminify = ({ dispatch, summary }) => {
   const perminify = () => {
     dispatch({ type: PostReducer.actionTypes.PERMINAFY_REQUEST })
     fetch(
@@ -97,14 +97,18 @@ const Perminify = ({ dispatch, article }) => {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ arXivID: arXivIDFromURL(article.id) })
+        body: JSON.stringify({ arXivID: summary.id })
       })
       .then((res) => {
-
-        console.log(res.json())
-        dispatch({ type: PostReducer.actionTypes.PERMINAFY_SUCCESS })
+        console.log('Server response', res)
+        dispatch({
+          type: PostReducer.actionTypes.PERMINAFY_SUCCESS,
+          payload: {
+            permaID: res.txID
+          }
+        })
       })
-      .catch(console.log)
+      .catch(console.warn)
   }
 
   const cancel = () => {
@@ -120,12 +124,12 @@ const Perminify = ({ dispatch, article }) => {
 
   return (
     <>
-      <Paragraph>Send into the Permaweb</Paragraph>
-      {!R.isEmpty(article) &&
+      <T.Paragraph>Send into the Permaweb</T.Paragraph>
+      {!R.isEmpty(summary) &&
         <ReactJson
           theme={'solorized'}
           name={false}
-        src={formatData(article)}
+        src={formatData(summary)}
           displayDataTypes={false}
           displayObjectSize={false}
           indentWidth={2}
@@ -150,12 +154,20 @@ const Perminify = ({ dispatch, article }) => {
   )
 }
 
-const Boast = ({ dispatch }) => {
+const Boast = ({ dispatch, summary, permaID }) => {
   const reset = () => dispatch({ type: PostReducer.actionTypes.RESET })
   return (
     <>
-      Congratulations! We're one step closer to a world of open-science.
-      Be proud and boast!
+      <T.Paragraph>
+        Congratulations! We're one step closer to a world of open-science.
+        Be proud and boast!
+      </T.Paragraph>
+      { permaID && (
+          <Link
+            to={Sw4rtzAPI.getExplorerLink(permaID)}>
+          {summary.title}
+          </Link>
+      )}
       <Row>
         <Col span={4} style={{ fontSize: '1.5em', display: 'flex', justifyContent: 'space-between'}}>
           <Link to="https://twitter.com"><Icon type="twitter"/></Link>
@@ -175,7 +187,7 @@ const Boast = ({ dispatch }) => {
 
 export default function Post() {
   const [state, dispatch] = useReducer(PostReducer, initialState)
-  const { currentStep, isLoading, article } = state
+  const { currentStep, isLoading, summary, permaID } = state
 
   const waitStatus = (step) => {
     return currentStep === step && isLoading
@@ -184,18 +196,18 @@ export default function Post() {
   return (
     <Steps direction="vertical" current={currentStep}>
       <Step
-        title={<Title level={4} className="marginless">Find a Paper</Title>}
+        title={<T.Title level={4} className="marginless">Find a Paper</T.Title>}
         description={currentStep === 0 && <FindByDOI dispatch={dispatch} />}
         icon={waitStatus(0) && <Icon type="loading"/>}
       />
       <Step
-        title={<Title level={4} className="marginless">Perminify</Title>}
-        description={currentStep === 1 && <Perminify dispatch={dispatch} article={article} />}
+        title={<T.Title level={4} className="marginless">Perminify</T.Title>}
+        description={currentStep === 1 && <Perminify dispatch={dispatch} summary={summary} />}
         icon={waitStatus(1) && <Icon type="loading" />}
       />
       <Step
-        title={<Title level={4} className="marginless">Boast</Title>}
-        description={currentStep === 2 && <Boast dispatch={dispatch} />}
+        title={<T.Title level={4} className="marginless">Boast</T.Title>}
+        description={currentStep === 2 && <Boast dispatch={dispatch} summary={summary} permaID={permaID} />}
       />
     </Steps>
   )

@@ -1,7 +1,7 @@
 
 export const initialState = {
   currentStep: 0,
-  article: {}
+  summary: {}
 }
 
 export const PostReducer = (state, { type, payload }) => {
@@ -15,7 +15,7 @@ export const PostReducer = (state, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        article: payload,
+        summary: payload,
         currentStep: 1
       }
     case PostReducer.actionTypes.PERMINAFY_REQUEST:
@@ -24,8 +24,10 @@ export const PostReducer = (state, { type, payload }) => {
         isLoading: true
       }
     case PostReducer.actionTypes.PERMINAFY_SUCCESS:
+      console.log('SUCCESS', payload)
       return {
         ...state,
+        permaID: payload.permaID,
         isLoading: false,
         currentStep: 2
       }

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Table } from 'antd';
 import dayjs from 'dayjs';
 
-import { ARWEAVE_EXPLORER } from '../constants'
 import { Sw4rtzAPI } from '../services';
 import { Link } from '../components';
 
@@ -22,7 +21,7 @@ const columns = [
     title: 'PermaID',
     dataIndex: 'broadcastedTxID',
     key: 'broadcastedTxID',
-    render: (permaID) => <><Link to={`${ARWEAVE_EXPLORER}/${permaID}`}>{permaID}</Link></>
+    render: (permaID) => <><Link to={Sw4rtzAPI.getExplorerLink(permaID)}>{permaID}</Link></>
   },
   {
     title: 'Status',
