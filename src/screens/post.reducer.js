@@ -1,7 +1,7 @@
 import Post from "./Post"
 
 export const initialState = {
-  currentStep: 1,
+  currentStep: 2,
   data: {
     "id": "http://arxiv.org/abs/2002.00012v1",
     "title": "The Birth of a Massive First-Star Binary",

@@ -4,12 +4,11 @@ import {
   Redirect,
   Switch,
   Route,
-  Link
-} from "react-router-dom";
+} from 'react-router-dom';
 import { Typography as T, Menu, Layout } from 'antd';
 import styled, { css } from 'styled-components';
 
-import { Icon } from './components'
+import { Icon, Link } from './components'
 import { Post, Search } from './screens';
 import logo from './logo.svg';
 import './App.css';
@@ -71,7 +70,7 @@ function App() {
                     display: 'inline-block',
                     marginBottom: '0',
                     lineHeight: '30px',
-                    verticalAlign: 'center'
+                    verticalAlign: 'sub'
                     }}>
                   Sw4rtz.it
                 </T.Title>

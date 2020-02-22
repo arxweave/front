@@ -3,6 +3,7 @@ import axios from 'axios';
 import ReactJson from 'react-json-view'
 import { Row, Col, Icon, Button, Form, Typography, Steps, Input } from 'antd';
 
+import { Link } from '../components';
 import { ARXIV_BASE_URL, SW4RTZ_API } from '../constants';
 import { parseXML, arXivIDFromURL } from '../utils';
 import { PostReducer, initialState } from './post.reducer';
@@ -23,7 +24,7 @@ const validateDOI = (rule, value, callback) => {
 const getDOIQueryUrl = (doi) => `${ARXIV_BASE_URL}/query?id_list=${2002.00012}`
 
 
-const Step1 = Form.create({ name: 'get_doi' })(({
+const FindByDOI = Form.create({ name: 'get_doi' })(({
   form: { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue, ...form },
   dispatch
 }) => {
@@ -84,7 +85,7 @@ const Step1 = Form.create({ name: 'get_doi' })(({
   )
 })
 
-const Step2 = ({ dispatch, data }) => {
+const Perminify = ({ dispatch, data }) => {
   const perminify = () => {
     dispatch({ type: PostReducer.actionTypes.PERMINAFY_REQUEST })
     fetch(
@@ -109,6 +110,13 @@ const Step2 = ({ dispatch, data }) => {
     dispatch({ type: PostReducer.actionTypes.GO_BACK })
   }
 
+  const formatData = (d) => {
+    return {
+      ...d,
+      authors: d.authors.flatMap(a => a.name)
+    }
+  }
+
   return (
     <>
       <Paragraph>Send into the Permaweb</Paragraph>
@@ -116,7 +124,7 @@ const Step2 = ({ dispatch, data }) => {
         <ReactJson
           theme={'solorized'}
           name={false}
-          src={data}
+          src={formatData(data)}
           displayDataTypes={false}
           displayObjectSize={false}
           indentWidth={2}
@@ -125,31 +133,40 @@ const Step2 = ({ dispatch, data }) => {
           enableEdit={false}
         />
       }
-      <Row type="flex" justify="start">
+      <Row style={{ margin: '1.5em 0' }} type="flex" justify="start">
         <Col span={3}>
-
           <Button type="default" onClick={cancel}>
             Cancel
           </Button>
         </Col>
         <Col span={3}>
-
           <Button type="primary" onClick={perminify}>
             Perminify
           </Button>
         </Col>
-
-
       </Row>
     </>
   )
 }
 
-const Step3 = ({ dispatch }) => {
+const Boast = ({ dispatch }) => {
   const reset = () => dispatch({ type: PostReducer.actionTypes.RESET })
   return (
     <>
-      <Button onClick={reset}>Give me more!</Button>
+      Hello world
+      <Row>
+        <Col span={4} style={{ fontSize: '1.5em', display: 'flex', justifyContent: 'space-between'}}>
+          <Link to="https://twitter.com"><Icon type="twitter"/></Link>
+          <Link to="https://facebook.com"><Icon type="facebook" /></Link>
+          <Link to="https://instagram.com"><Icon type="instagram" /></Link>
+          <Link to="https://reddit.com"><Icon type="reddit" /></Link>
+        </Col>
+      </Row>
+      <Row style={{ padding: '1.5em 0' }} type="flex" justify="start">
+        <Col span={3}>
+          <Button onClick={reset}>Give me more!</Button>
+        </Col>
+      </Row>
     </>
   )
 }
@@ -166,17 +183,17 @@ export default function Post() {
     <Steps direction="vertical" current={currentStep}>
       <Step
         title={<Title level={4} className="marginless">Find a Paper</Title>}
-        description={currentStep === 0 && <Step1 dispatch={dispatch} />}
+        description={currentStep === 0 && <FindByDOI dispatch={dispatch} />}
         icon={waitStatus(0) && <Icon type="loading"/>}
       />
       <Step
         title={<Title level={4} className="marginless">Perminify</Title>}
-        description={currentStep === 1 && <Step2 dispatch={dispatch} data={data} />}
+        description={currentStep === 1 && <Perminify dispatch={dispatch} data={data} />}
         icon={waitStatus(1) && <Icon type="loading" />}
       />
       <Step
         title={<Title level={4} className="marginless">Share the love</Title>}
-        description={currentStep === 2 && <Step3 dispatch={dispatch} />}
+        description={currentStep === 2 && <Boast dispatch={dispatch} />}
       />
     </Steps>
   )
