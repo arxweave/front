@@ -4,6 +4,18 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### Getting Started
+1. Copy and rename the `.env.example` file.
+    ```
+    cp .env.example .env.development.local
+    ```
+
+2. Install dependencies and launch the devServer
+    ```
+    yarn && yarn start
+    ```
+
+
 ## Available Scripts
 
 In the project directory, you can run:

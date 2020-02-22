@@ -4,7 +4,7 @@ import ReactJson from 'react-json-view'
 import { Row, Col, Icon, Button, Form, Typography, Steps, Input } from 'antd';
 
 import { Link } from '../components';
-import { ARXIV_BASE_URL, SW4RTZ_API } from '../constants';
+import { ARXIV_BASE_URL, SW4RTZIT_API } from '../constants';
 import { parseXML, arXivIDFromURL } from '../utils';
 import { PostReducer, initialState } from './post.reducer';
 
@@ -89,7 +89,7 @@ const Perminify = ({ dispatch, data }) => {
   const perminify = () => {
     dispatch({ type: PostReducer.actionTypes.PERMINAFY_REQUEST })
     fetch(
-      `${SW4RTZ_API}/new`,
+      `${SW4RTZIT_API}/new`,
       {
         method: 'POST',
         headers: {
@@ -179,6 +179,8 @@ export default function Post() {
   const waitStatus = (step) => {
     return currentStep === step && isLoading
   }
+
+  fetch(`${SW4RTZIT_API}/all`).then(console.log)
 
   return (
     <Steps direction="vertical" current={currentStep}>
