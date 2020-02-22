@@ -46,8 +46,6 @@ export default function Search() {
       .catch(console.error)
   }, [])
 
-  console.log(articles)
-
   return (
     <>
       <h1>Permified Articles</h1>
