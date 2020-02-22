@@ -10,7 +10,6 @@ import styled, { css } from 'styled-components';
 
 import { Icon, Link } from './components'
 import { Post, Search } from './screens';
-import logo from './logo.svg';
 import './App.css';
 
 // TODO: This grid breaks html width on mobile view.

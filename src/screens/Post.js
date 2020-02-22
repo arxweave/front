@@ -153,7 +153,8 @@ const Boast = ({ dispatch }) => {
   const reset = () => dispatch({ type: PostReducer.actionTypes.RESET })
   return (
     <>
-      Hello world
+      Congratulations! We're one step closer to a world of open-science.
+      Be proud and boast!
       <Row>
         <Col span={4} style={{ fontSize: '1.5em', display: 'flex', justifyContent: 'space-between'}}>
           <Link to="https://twitter.com"><Icon type="twitter"/></Link>
@@ -192,7 +193,7 @@ export default function Post() {
         icon={waitStatus(1) && <Icon type="loading" />}
       />
       <Step
-        title={<Title level={4} className="marginless">Share the love</Title>}
+        title={<Title level={4} className="marginless">Boast</Title>}
         description={currentStep === 2 && <Boast dispatch={dispatch} />}
       />
     </Steps>
