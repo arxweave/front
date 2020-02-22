@@ -3,3 +3,5 @@ export const ARXIV_BASE_URL = 'https://export.arxiv.org/api'
 export const SW4RTZIT_API = process.env.REACT_APP_SW4RTZIT_API
 
 export const ARWEAVE_EXPLORER = 'https://viewblock.io/arweave/tx/'
+
+export const ARWEAVE_VIEW_TX = 'https://arweave.net/tx/'

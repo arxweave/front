@@ -5,7 +5,7 @@ import * as R from 'ramda'
 import { Row, Col, Icon, Button, Form, Typography as T, Steps, Input } from 'antd';
 
 import { Link } from '../components';
-import { ARXIV_BASE_URL, SW4RTZIT_API } from '../constants';
+import { ARXIV_BASE_URL } from '../constants';
 import { parseXML, arXivIDFromURL } from '../utils';
 import { PostReducer, initialState } from './post.reducer';
 import { Sw4rtzAPI } from '../services';
@@ -86,25 +86,17 @@ const FindByDOI = Form.create({ name: 'get_doi' })(({
   )
 })
 
-const Perminify = ({ dispatch, summary }) => {
-  const perminify = () => {
+const Permify = ({ dispatch, summary }) => {
+  const permify = () => {
     dispatch({ type: PostReducer.actionTypes.PERMINAFY_REQUEST })
-    fetch(
-      `${SW4RTZIT_API}/new`,
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ arXivID: summary.id })
-      })
-      .then((res) => {
-        console.log('Server response', res)
+
+    Sw4rtzAPI
+      .permify(summary.id)
+      .then(res => {
         dispatch({
           type: PostReducer.actionTypes.PERMINAFY_SUCCESS,
           payload: {
-            permaID: res.txID
+            permaID: res.txId
           }
         })
       })
@@ -145,8 +137,8 @@ const Perminify = ({ dispatch, summary }) => {
           </Button>
         </Col>
         <Col span={3}>
-          <Button type="primary" onClick={perminify}>
-            Perminify
+          <Button type="primary" onClick={permify}>
+            Permify
           </Button>
         </Col>
       </Row>
@@ -201,8 +193,8 @@ export default function Post() {
         icon={waitStatus(0) && <Icon type="loading"/>}
       />
       <Step
-        title={<T.Title level={4} className="marginless">Perminify</T.Title>}
-        description={currentStep === 1 && <Perminify dispatch={dispatch} summary={summary} />}
+        title={<T.Title level={4} className="marginless">Permify</T.Title>}
+        description={currentStep === 1 && <Permify dispatch={dispatch} summary={summary} />}
         icon={waitStatus(1) && <Icon type="loading" />}
       />
       <Step
