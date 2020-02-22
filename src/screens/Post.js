@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
 import ReactJson from 'react-json-view'
+import * as R from 'ramda'
 import { Row, Col, Icon, Button, Form, Typography, Steps, Input } from 'antd';
 
 import { Link } from '../components';
@@ -21,7 +22,7 @@ const validateDOI = (rule, value, callback) => {
   callback()
 }
 
-const getDOIQueryUrl = (doi) => `${ARXIV_BASE_URL}/query?id_list=${2002.00012}`
+const getDOIQueryUrl = (doi) => `${ARXIV_BASE_URL}/query?id_list=${doi}`
 
 
 const FindByDOI = Form.create({ name: 'get_doi' })(({
@@ -85,7 +86,7 @@ const FindByDOI = Form.create({ name: 'get_doi' })(({
   )
 })
 
-const Perminify = ({ dispatch, data }) => {
+const Perminify = ({ dispatch, article }) => {
   const perminify = () => {
     dispatch({ type: PostReducer.actionTypes.PERMINAFY_REQUEST })
     fetch(
@@ -96,7 +97,7 @@ const Perminify = ({ dispatch, data }) => {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ arXivID: arXivIDFromURL(data.id) })
+        body: JSON.stringify({ arXivID: arXivIDFromURL(article.id) })
       })
       .then((res) => {
 
@@ -120,11 +121,11 @@ const Perminify = ({ dispatch, data }) => {
   return (
     <>
       <Paragraph>Send into the Permaweb</Paragraph>
-      {data &&
+      {!R.isEmpty(article) &&
         <ReactJson
           theme={'solorized'}
           name={false}
-          src={formatData(data)}
+        src={formatData(article)}
           displayDataTypes={false}
           displayObjectSize={false}
           indentWidth={2}
@@ -174,13 +175,11 @@ const Boast = ({ dispatch }) => {
 
 export default function Post() {
   const [state, dispatch] = useReducer(PostReducer, initialState)
-  const { currentStep, isLoading, data } = state
+  const { currentStep, isLoading, article } = state
 
   const waitStatus = (step) => {
     return currentStep === step && isLoading
   }
-
-  fetch(`${SW4RTZIT_API}/all`).then(console.log)
 
   return (
     <Steps direction="vertical" current={currentStep}>
@@ -191,7 +190,7 @@ export default function Post() {
       />
       <Step
         title={<Title level={4} className="marginless">Perminify</Title>}
-        description={currentStep === 1 && <Perminify dispatch={dispatch} data={data} />}
+        description={currentStep === 1 && <Perminify dispatch={dispatch} article={article} />}
         icon={waitStatus(1) && <Icon type="loading" />}
       />
       <Step
