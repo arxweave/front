@@ -177,7 +177,7 @@ const Boast = ({ dispatch, summary, permaID }) => {
   )
 }
 
-export default function Post() {
+export default function PermifyFlow() {
   const [state, dispatch] = useReducer(PostReducer, initialState)
   const { currentStep, isLoading, summary, permaID } = state
 

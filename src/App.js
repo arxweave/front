@@ -9,7 +9,7 @@ import { Typography as T, Menu, Layout } from 'antd';
 import styled, { css } from 'styled-components';
 
 import { Icon, Link } from './components'
-import { Post, Search } from './screens';
+import { PermifyFlow, Discover } from './screens';
 import './App.css';
 
 // TODO: This grid breaks html width on mobile view.
@@ -100,8 +100,8 @@ function App() {
             justifyContent: 'center',
             }}>
             <Switch>
-              <Route path="/permify" component={Post} />
-              <Route path="/discover" component={Search} />
+              <Route path="/permify" component={PermifyFlow} />
+              <Route path="/discover" component={Discover} />
               <Redirect from="/" exact to="/permify" />
             </Switch>
           </SGrid>

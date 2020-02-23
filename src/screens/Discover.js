@@ -36,7 +36,7 @@ const columns = [
   },
 ];
 
-export default function Search() {
+export default function Discover() {
   const [articles, setArticles] = useState()
 
   useEffect(() => {

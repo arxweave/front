@@ -1,2 +1,2 @@
-export { default as Post } from './Post';
-export { default as Search } from './Search';
+export { default as PermifyFlow } from './PermifyFlow';
+export { default as Discover } from './Discover';
