@@ -20,15 +20,16 @@ const SGrid = styled.div`
   max-width: 768px;
   margin: 0 auto;
 
-  // Keep main grid aligned with header.
+  /* Keep main grid aligned with header. */
   ${props => props.main && css`
-    margin-top: 18em;
+    margin-top: calc(64px * 2);
+    margin-bottom: 64px;
     padding: 0 20px 0 0;
-    // antd lg
+    /* antd lg */
     @media screen and (max-width: 992px) {
       padding: 0 30px 0 15px;
     }
-    // antd sm
+    /* antd sm */
     @media screen and (max-width: 576px) {
       margin-top: 10em;
       padding: 0 70px 0 50px;
@@ -38,6 +39,10 @@ const SGrid = styled.div`
   ${props => props.footer && css `
     justify-content: flex-end;
     padding-right: 20px;
+  `}
+
+  ${props => props.verticalCenter && css`
+    margin-top: 18em;
   `}
 `
 
@@ -94,17 +99,28 @@ function App() {
           </SGrid>
         </Header>
         <Content>
-          <SGrid main style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            }}>
-            <Switch>
-              <Route path="/permify" component={PermifyFlow} />
-              <Route path="/discover" component={Discover} />
-              <Redirect from="/" exact to="/permify" />
-            </Switch>
-          </SGrid>
+
+          <Switch>
+            <Route path="/permify" component={() =>
+              <SGrid main verticalCenter style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}>
+                <PermifyFlow />
+              </SGrid>
+            }/>
+            <Route path="/discover" component={() =>
+              <SGrid main style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}>
+                <Discover />
+              </SGrid>
+            }/>
+            <Redirect from="/" exact to="/permify" />
+          </Switch>
         </Content>
         <Footer>
           <SGrid footer>
