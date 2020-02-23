@@ -84,11 +84,11 @@ function App() {
                 lineHeight: '64px',
                 backgroundColor: '#f0f2f5'
               }}>
-              <Menu.Item key="post">
-                <Link to="/post">Post</Link>
+              <Menu.Item key="permify">
+                <Link to="/permify">Permify</Link>
               </Menu.Item>
-              <Menu.Item key="search">
-                <Link to="/search">Discover</Link>
+              <Menu.Item key="discover">
+                <Link to="/discover">Discover</Link>
               </Menu.Item>
             </Menu>
           </SGrid>
@@ -100,9 +100,9 @@ function App() {
             justifyContent: 'center',
             }}>
             <Switch>
-              <Route path="/post" component={Post} />
-              <Route path="/search" component={Search} />
-              <Redirect from="/" exact to="/post" />
+              <Route path="/permify" component={Post} />
+              <Route path="/discover" component={Search} />
+              <Redirect from="/" exact to="/permify" />
             </Switch>
           </SGrid>
         </Content>
