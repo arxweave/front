@@ -20,7 +20,7 @@ export const Boast = ({ dispatch, summary, permaID }) => {
         </Link>
       )}
       <Row>
-        <Col span={4} style={{ fontSize: '1.5em', display: 'flex', justifyContent: 'space-between' }}>
+        <Col xs={6} md={4} style={{ fontSize: '1.5em', display: 'flex', justifyContent: 'space-between' }}>
           <Link to="https://twitter.com"><Icon type="twitter" /></Link>
           <Link to="https://facebook.com"><Icon type="facebook" /></Link>
           <Link to="https://instagram.com"><Icon type="instagram" /></Link>
