@@ -14,3 +14,11 @@ export const parseXML = (xmlStr) => {
 // We use reduceRight - without second arg - to get last elem in array
 // SO: https://stackoverflow.com/a/52349873/2057532
 export const arXivIDFromURL = (url) => url.split('/').reduceRight(l => l)
+
+
+export const truncate = ({ str, start, end }) => {
+  const ellipsis = '...';
+  return str.length > start + end + ellipsis.length ?
+    `${str.substring(0, start)}${ellipsis}${str.substring(str.length - end)}`
+    : str
+}

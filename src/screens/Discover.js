@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from 'antd';
+import { Table, Typography as T } from 'antd';
 import dayjs from 'dayjs';
 
-import { Sw4rtzAPI } from '../services';
-import { Link } from '../components';
+import { Sw4rtzAPI } from '@services';
+import { Link } from '@components';
+import { truncate } from '@utils';
 
 const columns = [
   {
@@ -21,7 +22,11 @@ const columns = [
     title: 'PermaID',
     dataIndex: 'broadcastedTxID',
     key: 'broadcastedTxID',
-    render: (permaID) => <><Link to={Sw4rtzAPI.getExplorerLink(permaID)}>{permaID}</Link></>
+    render: (permaID) => (<>
+      <Link to={Sw4rtzAPI.getExplorerLink(permaID)}>
+      {truncate({ str: permaID, start: 6, end: 4 })}
+      </Link>
+    </>)
   },
   {
     title: 'Status',
@@ -47,7 +52,7 @@ export default function Discover() {
 
   return (
     <>
-      <h1>Permified Articles</h1>
+      <T.Title level={4}>Articles</T.Title>
       <Table
         dataSource={articles}
         rowKey={'broadcastedTxID'}
