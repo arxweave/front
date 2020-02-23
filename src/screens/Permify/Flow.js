@@ -17,17 +17,17 @@ export default function PermifyFlow() {
   return (
     <Steps direction="vertical" current={currentStep}>
       <Steps.Step
-        title={<T.Title level={4} className="marginless">Find a Paper</T.Title>}
+        title={<T.Title level={4} className="marginless step-title">Find a Paper</T.Title>}
         description={currentStep === 0 && <FindByDOI dispatch={dispatch} />}
         icon={waitStatus(0) && <Icon type="loading"/>}
       />
       <Steps.Step
-        title={<T.Title level={4} className="marginless">Permify</T.Title>}
+        title={<T.Title level={4} className="marginless step-title">Permify</T.Title>}
         description={currentStep === 1 && <Permify dispatch={dispatch} summary={summary} />}
         icon={waitStatus(1) && <Icon type="loading" />}
       />
       <Steps.Step
-        title={<T.Title level={4} className="marginless">Boast</T.Title>}
+        title={<T.Title level={4} className="marginless step-title">Boast</T.Title>}
         description={currentStep === 2 && <Boast dispatch={dispatch} summary={summary} permaID={permaID} />}
       />
     </Steps>

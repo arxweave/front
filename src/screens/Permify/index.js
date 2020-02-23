@@ -1,1 +1,1 @@
-export { default as PermifyFlow } from './PermifyFlow'
+export { default as PermifyFlow } from './Flow'

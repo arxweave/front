@@ -1,6 +1,6 @@
 
 export const initialState = {
-  currentStep: 2,
+  currentStep: 0,
   summary: {}
 }
 

@@ -38,6 +38,13 @@ html, body, #root {
   text-align: right;
 }
 
+
+/*
+  Antd overrides
+*/
 .marginless {
   margin-bottom: 0 !important;
+}
+.step-title {
+  line-height: inherit !important;
 }
