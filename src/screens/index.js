@@ -1,2 +1,2 @@
-export { default as PermifyFlow } from './PermifyFlow';
+export { PermifyFlow } from './Permify';
 export { default as Discover } from './Discover';

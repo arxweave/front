@@ -4,11 +4,11 @@ import ReactJson from 'react-json-view'
 import * as R from 'ramda'
 import { Row, Col, Icon, Button, Form, Typography as T, Steps, Input } from 'antd';
 
-import { Link } from '../components';
-import { ARXIV_BASE_URL } from '../constants';
-import { parseXML, arXivIDFromURL } from '../utils';
-import { PostReducer, initialState } from './post.reducer';
-import { Sw4rtzAPI } from '../services';
+import { ARXIV_BASE_URL } from '../../constants';
+import { Sw4rtzAPI } from '../../services';
+import { parseXML, arXivIDFromURL } from '../../utils';
+import { PermifyReducer, initialState } from './permify.reducer';
+import { Boast } from './Boast';
 
 const { Step } = Steps;
 
@@ -33,7 +33,7 @@ const FindByDOI = Form.create({ name: 'get_doi' })(({
     // Stop default page reload
     e.preventDefault();
     // Trigger api request
-    dispatch({ type: PostReducer.actionTypes.SEARCH_REQUEST })
+    dispatch({ type: PermifyReducer.actionTypes.SEARCH_REQUEST })
     axios
       .get(getDOIQueryUrl(getFieldValue('doi')))
       .then(res => {
@@ -53,7 +53,7 @@ const FindByDOI = Form.create({ name: 'get_doi' })(({
         }
       })
       .then(summary => {
-        dispatch({ type: PostReducer.actionTypes.SEARCH_SUCCESS, payload: summary })
+        dispatch({ type: PermifyReducer.actionTypes.SEARCH_SUCCESS, payload: summary })
       })
       .catch(foo => console.log('Erorr', foo))
   }
@@ -88,13 +88,13 @@ const FindByDOI = Form.create({ name: 'get_doi' })(({
 
 const Permify = ({ dispatch, summary }) => {
   const permify = () => {
-    dispatch({ type: PostReducer.actionTypes.PERMINAFY_REQUEST })
+    dispatch({ type: PermifyReducer.actionTypes.PERMINAFY_REQUEST })
 
     Sw4rtzAPI
       .permify(summary.id)
       .then(res => {
         dispatch({
-          type: PostReducer.actionTypes.PERMINAFY_SUCCESS,
+          type: PermifyReducer.actionTypes.PERMINAFY_SUCCESS,
           payload: {
             permaID: res.txId
           }
@@ -104,7 +104,7 @@ const Permify = ({ dispatch, summary }) => {
   }
 
   const cancel = () => {
-    dispatch({ type: PostReducer.actionTypes.GO_BACK })
+    dispatch({ type: PermifyReducer.actionTypes.GO_BACK })
   }
 
   const formatData = (d) => {
@@ -146,39 +146,9 @@ const Permify = ({ dispatch, summary }) => {
   )
 }
 
-const Boast = ({ dispatch, summary, permaID }) => {
-  const reset = () => dispatch({ type: PostReducer.actionTypes.RESET })
-  return (
-    <>
-      <T.Paragraph>
-        Congratulations! We're one step closer to a world of open-science.
-        Be proud and boast!
-      </T.Paragraph>
-      { permaID && (
-          <Link
-            to={Sw4rtzAPI.getExplorerLink(permaID)}>
-          {summary.title}
-          </Link>
-      )}
-      <Row>
-        <Col span={4} style={{ fontSize: '1.5em', display: 'flex', justifyContent: 'space-between'}}>
-          <Link to="https://twitter.com"><Icon type="twitter"/></Link>
-          <Link to="https://facebook.com"><Icon type="facebook" /></Link>
-          <Link to="https://instagram.com"><Icon type="instagram" /></Link>
-          <Link to="https://reddit.com"><Icon type="reddit" /></Link>
-        </Col>
-      </Row>
-      <Row style={{ padding: '1.5em 0' }} type="flex" justify="start">
-        <Col span={3}>
-          <Button onClick={reset}>Give me more!</Button>
-        </Col>
-      </Row>
-    </>
-  )
-}
 
 export default function PermifyFlow() {
-  const [state, dispatch] = useReducer(PostReducer, initialState)
+  const [state, dispatch] = useReducer(PermifyReducer, initialState)
   const { currentStep, isLoading, summary, permaID } = state
 
   const waitStatus = (step) => {

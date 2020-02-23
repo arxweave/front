@@ -4,26 +4,26 @@ export const initialState = {
   summary: {}
 }
 
-export const PostReducer = (state, { type, payload }) => {
+export const PermifyReducer = (state, { type, payload }) => {
   switch(type) {
-    case PostReducer.actionTypes.SEARCH_REQUEST:
+    case PermifyReducer.actionTypes.SEARCH_REQUEST:
       return {
         ...state,
         isLoading: true,
       }
-    case PostReducer.actionTypes.SEARCH_SUCCESS:
+    case PermifyReducer.actionTypes.SEARCH_SUCCESS:
       return {
         ...state,
         isLoading: false,
         summary: payload,
         currentStep: 1
       }
-    case PostReducer.actionTypes.PERMINAFY_REQUEST:
+    case PermifyReducer.actionTypes.PERMINAFY_REQUEST:
       return {
         ...state,
         isLoading: true
       }
-    case PostReducer.actionTypes.PERMINAFY_SUCCESS:
+    case PermifyReducer.actionTypes.PERMINAFY_SUCCESS:
       console.log('SUCCESS', payload)
       return {
         ...state,
@@ -31,20 +31,20 @@ export const PostReducer = (state, { type, payload }) => {
         isLoading: false,
         currentStep: 2
       }
-    case PostReducer.actionTypes.GO_BACK:
+    case PermifyReducer.actionTypes.GO_BACK:
       const { current } = state
       return {
         ...state,
         currentStep: current > 0 ? current  - 1 : 0
       }
-    case PostReducer.actionTypes.RESET:
+    case PermifyReducer.actionTypes.RESET:
       return initialState
     default:
       return state
   }
 }
 
-PostReducer.actionTypes = {
+PermifyReducer.actionTypes = {
   SEARCH_REQUEST: 'SEARCH_REQUEST',
   SEARCH_SUCCESS: 'SEARCH_SUCCESS',
   PERMINAFY_SUCCESS: 'PERMINAFY_SUCCESS',
