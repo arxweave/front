@@ -4,9 +4,9 @@ import ReactJson from 'react-json-view'
 import * as R from 'ramda'
 import { Row, Col, Icon, Button, Form, Typography as T, Steps, Input } from 'antd';
 
-import { ARXIV_BASE_URL } from '../../constants';
-import { Sw4rtzAPI } from '../../services';
-import { parseXML, arXivIDFromURL } from '../../utils';
+import { ARXIV_BASE_URL } from '@constants';
+import { Sw4rtzAPI } from '@services';
+import { parseXML, arXivIDFromURL } from '@utils';
 import { PermifyReducer, initialState } from './permify.reducer';
 import { Boast } from './Boast';
 

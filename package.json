@@ -19,9 +19,9 @@
     "xml2js": "^0.4.23"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -40,6 +40,8 @@
     ]
   },
   "devDependencies": {
+    "craco": "^0.0.3",
+    "craco-alias": "^2.1.1",
     "http-proxy-middleware": "^1.0.0"
   }
 }

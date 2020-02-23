@@ -8,8 +8,8 @@ import {
 import { Typography as T, Menu, Layout } from 'antd';
 import styled, { css } from 'styled-components';
 
-import { Icon, Link } from './components'
-import { PermifyFlow, Discover } from './screens';
+import { Icon, Link } from '@components'
+import { PermifyFlow, Discover } from '@screens';
 import './App.css';
 
 // TODO: This grid breaks html width on mobile view.

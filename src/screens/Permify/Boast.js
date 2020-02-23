@@ -1,8 +1,8 @@
 import React from 'react';
 import { Row, Col, Icon, Button, Typography as T } from 'antd';
 
-import { Link } from '../../components';
-import { Sw4rtzAPI } from '../../services';
+import { Link } from '@components';
+import { Sw4rtzAPI } from '@services';
 import { PermifyReducer } from './permify.reducer';
 
 export const Boast = ({ dispatch, summary, permaID }) => {
