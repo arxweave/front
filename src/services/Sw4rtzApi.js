@@ -18,5 +18,7 @@ export const Sw4rtzAPI = {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => res.data)
+    .then(res => res.data),
+
+  get: (doi) => axios.get(`${SW4RTZIT_API}/arXivID/${doi}`).then(res => res.data)
 }
